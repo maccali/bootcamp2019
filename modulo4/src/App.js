@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
 
-import mark from './assets/mark.jpg'
+import TechList from './components/TechList';
 
 function App(){
-    return <img src={mark} />
+    return <TechList />
 }
 
 export default App;
