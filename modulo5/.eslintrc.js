@@ -30,6 +30,7 @@ module.exports = {
             'warn',
             { extensions: ['.jsx', '.js'] }
         ],
+        'react/state-in-constructor': 'never',
         'import/prefer-default-export': 'off'
     },
 };
