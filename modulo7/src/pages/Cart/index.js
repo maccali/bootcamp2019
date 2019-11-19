@@ -1,84 +1,66 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import api from '../../servises/api';
-import Container from '../../components/Container'
-import { Loading, Owner, IssueList } from './styles';
+import tenis from '../../assets/tenis.jpg'
+
+import { MdRemoveCircleOutline, MdAddCircleOutline, MdDelete } from 'react-icons/md';
 
 
-export default class Repository extends Component {
-  // static propTypes = {
-  //   match: PropTypes.shape({
-  //     params: PropTypes.shape({
-  //       repository: PropTypes.string,
-  //     }),
-  //   }).isRequired,
-  // };
+import { Container, ProductTable, Total } from './styles';
 
-  state = {
-    repository: {},
-    issues: [],
-    loading: true,
-  };
-
-  async componentDidMount() {
-    const { match } = this.props;
-
-    const repoName = decodeURIComponent(match.params.repository);
-
-    const [repository, issues] = await Promise.all([
-      api.get(`/repos/${repoName}`),
-      api.get(`/repos/${repoName}/issues`, {
-        params: {
-          state: 'open',
-          per_page: 5,
-        },
-      }),
-    ]);
-
-    this.setState({
-      repository: repository.data,
-      issues: issues.data,
-      loading: false,
-    });
-    console.log(repository);
-    console.log(issues);
-  }
-
+export default class Cart extends Component {
   render() {
-    const { repository, issues, loading } = this.state;
-
-    if (loading) {
-      return <Loading>Carregando</Loading>
-    }
-
     return (
       <Container>
-        <Owner>
-          <Link to="/">Voltar aos repositórios</Link>
-          <img src={repository.owner.avatar_url} alt={repository.owner.login} />
-          <h1>{repository.name}</h1>
-          <p>{repository.description}</p>
-        </Owner>
-        <IssueList>
-          {issues.map(issue => (
-            <li key={String(issue.id)}>
-              <img src={issue.user.avatar_url} alt={issue.user.login} />
-              <div>
-                <strong>
-                  <a href={issue.html_url} target="_blank">{issue.title}</a>
-                  {issue.labels.map(label => (
-                    <span key={String(label.id)}>{label.name}</span>
-                  ))}
-                </strong>
-                <p>{issue.user.login}</p>
-              </div>
-            </li>
-          ))}
-        </IssueList>
+        <ProductTable>
+          <thead>
+            <tr>
+              <th />
+              <th>PRODUTO</th>
+              <th>QTD</th>
+              <th>SUBTOTAL</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img src={tenis} alt="Tênis" />
+              </td>
+              <td>
+                <strong>Tenis muito massa</strong>
+                <span>R$129,90</span>
+              </td>
+              <td>
+                <div>
+                  <button>
+                    <MdRemoveCircleOutline size={20} color="#7159c1" />
+                  </button>
+                  <input type="number" readOnly value={1} />
+                  <button>
+                    <MdAddCircleOutline size={20} color="#7159c1" />
+                  </button>
+                </div>
+              </td>
+              <td>
+                <strong>R$258,80</strong>
+              </td>
+              <td>
+                <button type="button">
+                  <MdDelete size={20} color="#7159c1" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </ProductTable>
+
+        <footer>
+          <button type="button">Finalizar Pedido</button>
+          <Total>
+            <span>TOTAL</span>
+            <strong>R$1920,28</strong>
+          </Total>
+        </footer>
       </Container>
     );
   }
 }
-
