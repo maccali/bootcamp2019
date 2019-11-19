@@ -1,75 +1,71 @@
-import styled, { keyframes, css } from 'styled-components';
+import styled from 'styled-components';
+import { darken } from 'polished';
 
-export const Form = styled.form`
-  margin-top: 30px;
-  display: flex;
-  flex-direction: row;
 
-  input {
-    flex: 1;
-    border: 1px solid #eee;
-    padding: 10px 15px;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-`;
-
-const rotate = keyframes`
-  	from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-`;
-
-export const SubmitButton = styled.button.attrs(props => ({
-  type: 'submit',
-  disabled: props.loading,
-}))`
-  background: #7159c1;
-  border: 0;
-  padding: 0 15px;
-  margin-left: 10px;
-  border-radius: 4px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &[disabled] {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  ${props =>
-    props.loading &&
-    css`
-      svg {
-        animation: ${rotate} 2s linear infinite;
-      }
-    `}
-`;
-
-export const List = styled.ul`
+export const ProductList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
   list-style: none;
-  margin-top: 30px;
 
   li {
-    padding: 15px 0;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px;
 
-    & + li {
-      border-top: 1px solid #eee;
+    img {
+      align-self: center;
+      max-width: 250px;
     }
 
-    a {
-      color: #7159c1;
-      text-decoration: none;
+    > strong {
+      font-size: 16px;
+      line-height: 20px;
+      color: #333;
+      margin-top: 5px;
     }
+
+    > span {
+      font-size: 21px;
+      font-weight: bold;
+      margin: 5px 0 20px;
+    }
+
+    button {
+      background: #7159c1;
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      transition: background .2s;
+
+      &:hover {
+        background: ${darken(0.03, '#7159c1')}
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.1);
+
+        svg {
+          margin-right: 5px;
+        }
+      }
+
+      span {
+        flex: 1;
+        text-align: center;
+        font-weight: bold;
+      }
+
+    }
+
   }
-`;
+`

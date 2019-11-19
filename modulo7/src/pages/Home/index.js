@@ -1,101 +1,30 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 
-import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
+import tenis from '../../assets/tenis.jpg'
 
-import api from '../../servises/api';
+import { MdAddShoppingCart } from 'react-icons/md';
 
-import Container from '../../components/Container'
-import { Form, SubmitButton, List } from './styles';
+import { ProductList } from './styles';
 
-export default class Main extends Component {
-  state = {
-    newRepo: '',
-    repositories: [],
-    loading: false,
-  };
+export default function Home() {
+  return (
+    <ProductList>
+      <li>
+        <img
+          src={tenis}
+          alt="Tênis"
+        />
+        <strong>Tênis de mesa</strong>
+        <span>R$ 129,90</span>
 
-  // Carregar os dados do local storage
-  componentDidMount() {
-    const repositories = localStorage.getItem('repositories');
+        <button type="button">
+          <div>
+            <MdAddShoppingCart size={16} color="#FFF"/> 3
+          </div>
+            <span>ADICIONAR AO CARRINHO</span>
+        </button>
+      </li>
 
-    if (repositories) {
-      this.setState({ repositories: JSON.parse(repositories) });
-    }
-  }
-
-  componentDidUpdate(_, prevState) {
-    const { repositories } = this.state;
-    if (prevState.repositories !== repositories) {
-      localStorage.setItem('repositories', JSON.stringify(repositories));
-    }
-  }
-
-  handleInputChange = e => {
-    this.setState({ newRepo: e.target.value });
-  };
-
-  handleSubmit = async e => {
-    e.preventDefault();
-
-    this.setState({
-      loading: true,
-    });
-
-    const { newRepo, repositories } = this.state;
-
-    const response = await api.get(`/repos/${newRepo}`);
-
-    const data = {
-      name: response.data.full_name,
-    };
-
-    this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
-      loading: false,
-    });
-
-    console.log(response.data);
-  };
-
-  render() {
-    const { newRepo, loading, repositories } = this.state;
-
-    return (
-      <Container>
-        <h1>
-          <FaGithubAlt />
-          Repositórios
-        </h1>
-
-        <Form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="Adicionar Repositório"
-            value={newRepo}
-            onChange={this.handleInputChange}
-          />
-          <SubmitButton loading={loading}>
-            {loading ? (
-              <FaSpinner color="#fff" size={14} />
-            ) : (
-              <FaPlus color="#fff" size={14} />
-            )}
-          </SubmitButton>
-        </Form>
-
-        <List>
-          {repositories.map(repository => (
-            <li key={repository.name}>
-              <span>{repository.name}</span>
-              <Link to={`/repository/${encodeURIComponent(repository.name)}`}>
-                Detalhes
-              </Link>
-            </li>
-          ))}
-        </List>
-      </Container>
-    );
-  }
+    </ProductList>
+  );
 }
